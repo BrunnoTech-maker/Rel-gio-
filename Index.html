@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Relógio Barbie Glam - Widget</title>
+  <style>
+    .glitter-clock-widget {
+      display: inline-block;
+      width: 320px;
+      height: 320px;
+    }
+
+    .glitter-border {
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+      border-radius: 50%;
+      background: url('https://i.imgur.com/8CMUDol.jpeg') center/cover no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .clock {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background-image: url('https://i.imgur.com/8mPSEYN.jpeg');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      box-shadow: 0 0 20px #ff00aa;
+    }
+
+    .hand {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      transform-origin: bottom center;
+      border-radius: 6px;
+    }
+
+    .hour {
+      width: 6px;
+      height: 70px;
+      background: linear-gradient(45deg, #ff69b4, #ffe6fa);
+    }
+
+    .minute {
+      width: 4px;
+      height: 100px;
+      background: linear-gradient(45deg, #ff1493, #ffc0f7);
+    }
+
+    .second {
+      width: 2px;
+      height: 120px;
+      background: linear-gradient(45deg, #ffffff, #ffccff);
+    }
+
+    .center {
+      width: 12px;
+      height: 12px;
+      background: #fff;
+      border: 2px solid #ff00aa;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      z-index: 10;
+    }
+
+    .hour-flash {
+      animation: hourFlash 2s ease-in-out;
+    }
+
+    @keyframes hourFlash {
+      0% { box-shadow: 0 0 30px #fff5, inset 0 0 30px #ff00ff; }
+      50% { box-shadow: 0 0 60px #fff, inset 0 0 60px #ff99ff; }
+      100% { box-shadow: 0 0 30px #fff5, inset 0 0 30px #ff00ff; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glitter-clock-widget" id="barbie-clock-widget">
+    <div class="glitter-border">
+      <div class="clock" id="clock">
+        <div class="hand hour" id="hour"></div>
+        <div class="hand minute" id="minute"></div>
+        <div class="hand second" id="second"></div>
+        <div class="center"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const h = now.getHours() % 12;
+      const m = now.getMinutes();
+      const s = now.getSeconds();
+
+      document.getElementById("hour").style.transform = `rotate(${(h + m / 60) * 30}deg)`;
+      document.getElementById("minute").style.transform = `rotate(${(m + s / 60) * 6}deg)`;
+      document.getElementById("second").style.transform = `rotate(${s * 6}deg)`;
+
+      if (m === 0 && s === 0) {
+        const clock = document.getElementById("clock");
+        clock.classList.add("hour-flash");
+        setTimeout(() => clock.classList.remove("hour-flash"), 2000);
+      }
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body>
+</html>
